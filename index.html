@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="PRIMEFORM">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://uislhzyhrhrfogciyjle.supabase.co wss://uislhzyhrhrfogciyjle.supabase.co https://cdn.jsdelivr.net; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050c18">
+  <meta name="description"
+    content="Plataforma privada de seguimiento de entrenamiento: programación personalizada, progreso físico, nutrición y revisiones.">
+  <title>PRIMEFORM — Personalized Workout Tracking</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <noscript>
+    <p style="padding:24px;color:#fff;font:16px sans-serif">PRIMEFORM necesita JavaScript activado para funcionar.</p>
+  </noscript>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><img class="brand-mark" src="assets/logo-mark.webp" alt="" width="46" height="46">
+        <div><strong class="wordmark"><span>PRIME</span>FORM</strong><small>PERSONALIZED WORKOUT TRACKING</small></div>
+      </div>
+      <div>
+        <div class="nav-label">ESPACIO DE TRABAJO</div>
+        <nav class="nav">
+          <button class="active" data-action="nav" data-page="dashboard"><span class="ico">▦</span> Resumen</button>
+          <button data-action="nav" data-page="clients"><span class="ico">♙</span> Clientes</button>
+          <button data-action="nav" data-page="workouts"><span class="ico">↗</span> Entrenamientos</button>
+          <button data-action="nav" data-page="progress"><span class="ico">⌁</span> Progreso físico</button>
+          <button data-action="nav" data-page="nutrition"><span class="ico">◉</span> Nutrición</button>
+          <button data-action="nav" data-page="checkins"><span class="ico">☷</span> Revisiones</button>
+          <button data-action="nav" data-page="library"><span class="ico">▤</span> Biblioteca</button>
+          <button data-action="nav" data-page="portal"><span class="ico">☺</span> Vista de cliente</button>
+        </nav>
+      </div>
+      <div>
+        <div class="nav-label">SISTEMA</div>
+        <nav class="nav">
+          <button data-action="nav" data-page="settings"><span class="ico">⚙</span> Datos y ajustes</button>
+        </nav>
+      </div>
+      <div class="sidebar-foot"><strong>Tus datos y nube</strong>Sincronizados con Supabase y respaldados en este
+        navegador.<div class="legal-links"><button type="button" class="linkbtn" data-action="legal:open"
+            data-doc="privacy">Privacidad</button> · <button type="button" class="linkbtn" data-action="legal:open"
+            data-doc="terms">Términos</button> · <button type="button" class="linkbtn" data-action="pwa:help">Instalar
+            app</button></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="topright"><button class="btn small mobile-menu" id="menuBtn"
+            data-action="menu:toggle">☰</button><span class="crumb">Espacio del equipo / <b
+              id="crumb">Resumen</b></span></div>
+        <div class="topright"><button type="button" class="syncchip off" id="syncChip" data-action="sync:open" hidden
+            title="Sincronización del equipo"></button><span class="pill" id="secPill">Datos en este
+            dispositivo</span><button class="btn small" id="lockBtn" data-action="security:lock" hidden>🔒
+            Bloquear</button></div>
+      </header>
+      <div class="installbanner" id="installBanner" hidden></div>
+      <div class="content">
+        <section class="section active" id="page-dashboard">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">CONTROL DE TU EQUIPO</div>
+              <h1>Tu coaching, en un solo lugar.</h1>
+              <p>Una vista clara de tus clientes, su adherencia y el trabajo pendiente.</p>
+            </div><button class="btn primary" data-action="client:new">＋ Añadir cliente</button>
+          </div>
+          <div class="notice warn" id="backupNotice" hidden><span><b>Hacé un respaldo.</b> Tus datos viven solo en este
+              navegador: descargá una copia para no perderlos.</span> <button class="btn small"
+              data-action="backup:now">↓ Descargar respaldo</button></div>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-top"><span>Clientes activos</span><span class="stat-icon">♙</span></div>
+              <div class="stat-value" id="statClients">0</div>
+              <div class="stat-foot" id="statClientsFoot">Sin límite de cupos</div>
+              <div id="statClientsBar"></div>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>Rutinas creadas</span><span class="stat-icon">↗</span></div>
+              <div class="stat-value" id="statWorkouts">0</div>
+              <div class="stat-foot">Planes de entrenamiento</div>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>Evaluaciones</span><span class="stat-icon">⌁</span></div>
+              <div class="stat-value" id="statMeasures">0</div>
+              <div class="stat-foot">Registros de progreso</div>
+            </div>
+            <div class="stat">
+              <div class="stat-top"><span>Revisiones pendientes</span><span class="stat-icon">☷</span></div>
+              <div class="stat-value" id="statCheckins">0</div>
+              <div class="stat-foot">Seguimientos por completar</div>
+            </div>
+          </div>
+          <div class="card" id="priorityCard" style="margin-bottom:16px" hidden>
+            <div class="cardhead">
+              <div>
+                <h2>Atención prioritaria</h2>
+                <div class="muted" style="font-size:12px;margin-top:4px">Semáforo de retención: quién necesita contacto
+                  hoy para no abandonar el plan</div>
+              </div><span class="tag" id="priorityTag"></span>
+            </div>
+            <div id="priorityList"></div>
+          </div>
+          <div class="layout2">
+            <div class="card">
+              <div class="cardhead">
+                <h2>Evaluaciones y revisiones por semana</h2><span class="tag">Últimas 8 semanas</span>
+              </div>
+              <div id="activityChart"></div>
+              <div class="note">Cuántas evaluaciones físicas y revisiones registraste en las últimas 8 semanas: una
+                forma rápida de ver tu constancia de seguimiento.</div>
+            </div>
+            <div class="card">
+              <div class="cardhead">
+                <h2>Clientes recientes</h2><button class="btn small" data-action="nav" data-page="clients">Ver todos
+                  →</button>
+              </div>
+              <div class="client-list" id="recentClients"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:16px">
+            <div class="cardhead">
+              <h2>Atajos de trabajo</h2>
+            </div>
+            <div class="toolbar"><button class="btn" data-action="client:new">＋ Nuevo cliente</button><button
+                class="btn" data-action="workout:new">＋ Crear rutina</button><button class="btn"
+                data-action="measure:new">＋ Registrar evaluación</button><button class="btn" data-action="nav"
+                data-page="checkins">☷ Revisar seguimientos</button></div>
+          </div>
+        </section>
+        <section class="section" id="page-clients">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">GESTIÓN DE PERSONAS</div>
+              <h1>Clientes</h1>
+              <p>Centralizá perfiles, objetivos, datos de referencia y estado de cada persona.</p>
+            </div><button class="btn primary" data-action="client:new">＋ Añadir cliente</button>
+          </div>
+          <div id="slotBar"></div>
+          <div class="toolbar"><input id="clientSearch" placeholder="Buscar por nombre..."
+              data-input="clients:filter"><select id="goalFilter" data-change="clients:filter">
+              <option value="">Todos los objetivos</option>
+              <option>Hipertrofia</option>
+              <option>Pérdida de grasa</option>
+              <option>Fuerza</option>
+              <option>Rendimiento</option>
+              <option>Salud general</option>
+            </select><select id="statusFilter" data-change="clients:filter">
+              <option value="">Todos los estados</option>
+              <option>Activo</option>
+              <option>En espera</option>
+              <option>En pausa</option>
+              <option>Finalizado</option>
+            </select></div>
+          <div id="clientsGrid" class="grid-cards"></div>
+        </section>
+        <section class="section" id="page-workouts">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">PLANIFICACIÓN</div>
+              <h1>Entrenamientos</h1>
+              <p>Creá planes con ejercicios, series, repeticiones, descanso y esfuerzo percibido.</p>
+            </div><button class="btn primary" data-action="workout:new">＋ Crear rutina</button>
+          </div>
+          <div class="toolbar"><select id="workoutClientFilter" data-change="workouts:filter">
+              <option value="">Todos los clientes</option>
+            </select></div>
+          <div id="workoutsList"></div>
+        </section>
+        <section class="section" id="page-progress">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">EVALUACIÓN Y RESULTADOS</div>
+              <h1>Progreso físico</h1>
+              <p>Registrá peso, medidas y notas de evaluación para comparar cambios en el tiempo.</p>
+            </div><button class="btn primary" data-action="measure:new">＋ Registrar evaluación</button>
+          </div>
+          <div class="toolbar"><select id="measureClientFilter" data-change="measures:filter">
+              <option value="">Todos los clientes</option>
+            </select></div>
+          <div id="progressPanel"></div>
+          <div id="measuresList"></div>
+        </section>
+        <section class="section" id="page-nutrition">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">HÁBITOS Y ALIMENTACIÓN</div>
+              <h1>Nutrición</h1>
+              <p>Guardá objetivos nutricionales de referencia y revisá la adherencia del cliente.</p>
+            </div><button class="btn primary" data-action="nutrition:new">＋ Añadir objetivo</button>
+          </div>
+          <div class="notice">Este módulo registra objetivos y adherencia. Los objetivos son <b>recomendaciones
+              orientativas, no prescripciones</b>: no sustituyen una valoración individual ni la atención de un
+            nutricionista, cuyo criterio prevalece.</div>
+          <div id="nutritionList" class="grid-cards"></div>
+        </section>
+        <section class="section" id="page-checkins">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">CONTACTO CONTINUO</div>
+              <h1>Revisiones</h1>
+              <p>Organizá los check-ins semanales y anotá recuperación, energía, sueño y adherencia.</p>
+            </div><button class="btn primary" data-action="checkin:new">＋ Nueva revisión</button>
+          </div>
+          <div id="checkinsList"></div>
+        </section>
+        <section class="section" id="page-library">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">CATÁLOGO</div>
+              <h1>Biblioteca de ejercicios</h1>
+              <p>Ejercicios de gimnasio y metodologías populares con descripción e imagen. Añadilos a una rutina con un
+                clic o creá los tuyos.</p>
+            </div><button class="btn primary" data-action="library:new">＋ Ejercicio propio</button>
+          </div>
+          <div class="toolbar"><input id="libSearch" placeholder="Buscar ejercicio o equipo..."
+              data-input="library:filter"><select id="libGroup" data-change="library:filter">
+              <option value="">Todos los grupos</option>
+            </select><span class="pill" id="libCount"></span></div>
+          <div id="libList" class="grid-cards"></div>
+        </section>
+        <section class="section" id="page-portal">
+          <div class="viewer-banner" id="viewerBanner" hidden></div>
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">PREVISUALIZACIÓN</div>
+              <h1>Vista de cliente</h1>
+              <p>Así ve su plan cada cliente: rutinas con imágenes y descripción de cada ejercicio, nutrición y
+                progreso.</p>
+            </div>
+          </div>
+          <div class="toolbar"><select id="portalClient" data-change="portal:select">
+              <option value="">Todos los clientes</option>
+            </select></div>
+          <div id="portalBody"></div>
+        </section>
+        <section class="section" id="page-settings">
+          <div class="pagehead">
+            <div>
+              <div class="eyebrow">CONFIGURACIÓN</div>
+              <h1>Datos y ajustes</h1>
+              <p>Respaldo, seguridad y privacidad de la información de tus clientes.</p>
+            </div>
+          </div>
+          <div class="card" style="max-width:760px;margin-bottom:16px">
+            <h2 style="margin-top:0">Seguridad</h2>
+            <p class="muted" id="secStatus"></p>
+            <div class="toolbar"><button class="btn primary" id="secEnable" data-action="security:enable">🔒 Proteger
+                con contraseña</button><button class="btn" id="secLock" data-action="security:lock" hidden>Bloquear
+                ahora</button><button class="btn" id="secDisable" data-action="security:disable" hidden>Quitar
+                contraseña</button></div>
+            <div class="note">La contraseña cifra los datos en este dispositivo y <b>no se puede recuperar</b>. Guardá
+              respaldos.</div>
+          </div>
+          <div class="card" style="max-width:760px;margin-bottom:16px">
+            <h2 style="margin-top:0">Respaldo</h2>
+            <p class="muted">Los registros se guardan en el almacenamiento de este navegador y se sincronizan con
+              Supabase. <b id="backupInfo"></b></p>
+            <div class="toolbar"><button class="btn primary" data-action="settings:export">↓ Descargar
+                respaldo</button><button class="btn" data-action="settings:pick-file">↑ Importar respaldo</button><input
+                id="importFile" type="file" accept=".json,application/json" style="display:none"
+                data-change="settings:import"></div>
+          </div>
+          <div class="card" id="legalCard" style="max-width:760px;margin-bottom:16px"></div>
+          <div class="card" id="syncCard" style="max-width:760px;margin-bottom:16px"></div>
+          <div class="card" id="installCard" style="max-width:760px;margin-bottom:16px"></div>
+          <div class="card" style="max-width:760px">
+            <h2 style="margin-top:0">Otras opciones</h2>
+            <div class="toolbar"><button class="btn" data-action="settings:seed">Cargar datos de ejemplo
+                (ficticios)</button><button class="btn danger" data-action="settings:clear">Eliminar todos los
+                datos</button></div>
+            <div class="note">Privacidad: los datos de salud son sensibles. Registrá el consentimiento de cada cliente y
+              no compartas respaldos por canales inseguros. Las recomendaciones de la app son orientativas y no
+              reemplazan a un profesional de la salud.</div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modalbox">
+      <div class="modalhead">
+        <h2 id="modalTitle">Formulario</h2><button class="close" data-action="modal:close"
+          aria-label="Cerrar">×</button>
+      </div>
+      <div id="modalBody"></div>
+      <div class="modalfoot"><button class="btn" data-action="modal:close">Cancelar</button><button class="btn primary"
+          id="modalSave">Guardar</button></div>
+    </div>
+  </div>
+  <div class="report" id="report" hidden></div>
+  <div class="gate" id="gate" hidden></div>
+  <nav class="tabbar" id="tabbar" aria-label="Navegación principal">
+    <button type="button" data-action="nav" data-page="dashboard" class="active"><span
+        aria-hidden="true">▦</span><b>Resumen</b></button>
+    <button type="button" data-action="nav" data-page="clients"><span
+        aria-hidden="true">♙</span><b>Clientes</b></button>
+    <button type="button" data-action="nav" data-page="workouts"><span
+        aria-hidden="true">↗</span><b>Rutinas</b></button>
+    <button type="button" data-action="nav" data-page="progress"><span
+        aria-hidden="true">⌁</span><b>Progreso</b></button>
+    <button type="button" data-action="menu:toggle"><span aria-hidden="true">☰</span><b>Más</b></button>
+  </nav>
+  <div class="confirm" id="confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle"
+    aria-describedby="confirmBody" hidden>
+    <div class="confirm-box">
+      <div class="confirm-icon" aria-hidden="true">⚠</div>
+      <h2 id="confirmTitle">Confirmar</h2>
+      <div id="confirmBody"></div>
+      <div class="confirm-type" id="confirmType" hidden><label for="confirmInput" id="confirmTypeLabel"></label><input
+          id="confirmInput" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false"></div>
+      <div class="confirm-actions"><button type="button" class="btn" id="confirmCancel">Cancelar</button><button
+          type="button" class="btn danger-solid" id="confirmOk">Eliminar</button></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/pwa.js"></script>
+  <script src="js/models/Storage.js"></script>
+  <script src="js/models/Validate.js"></script>
+  <script src="js/models/Vault.js"></script>
+  <script src="js/models/SyncMerge.js"></script>
+  <script src="js/models/SupabaseClient.js"></script>
+  <script src="js/models/Store.js"></script>
+  <script src="js/models/Schema.js"></script>
+  <script src="js/models/Metrics.js"></script>
+  <script src="js/models/Advisory.js"></script>
+  <script src="js/models/Learn.js"></script>
+  <script src="js/models/Legal.js"></script>
+  <script src="js/models/Share.js"></script>
+  <script src="js/models/Sync.js"></script>
+  <script src="js/models/Entities.js"></script>
+  <script src="js/models/Selectors.js"></script>
+  <script src="js/models/DemoData.js"></script>
+  <script src="js/models/ExerciseGuides.js"></script>
+  <script src="js/models/ExerciseLibrary.js"></script>
+  <script src="js/views/Layout.js"></script>
+  <script src="js/views/Toast.js"></script>
+  <script src="js/views/Confirm.js"></script>
+  <script src="js/views/Modal.js"></script>
+  <script src="js/views/FormFields.js"></script>
+  <script src="js/views/ExerciseArt.js"></script>
+  <script src="js/views/Charts.js"></script>
+  <script src="js/views/AdvisoryView.js"></script>
+  <script src="js/views/ProgressView.js"></script>
+  <script src="js/views/ReportView.js"></script>
+  <script src="js/views/LearnView.js"></script>
+  <script src="js/views/LegalView.js"></script>
+  <script src="js/views/ShareView.js"></script>
+  <script src="js/views/InstallView.js"></script>
+  <script src="js/views/SyncView.js"></script>
+  <script src="js/views/ExerciseGuideView.js"></script>
+  <script src="js/views/Forms.js"></script>
+  <script src="js/views/DashboardView.js"></script>
+  <script src="js/views/ClientsView.js"></script>
+  <script src="js/views/WorkoutsView.js"></script>
+  <script src="js/views/MeasuresView.js"></script>
+  <script src="js/views/NutritionView.js"></script>
+  <script src="js/views/CheckinsView.js"></script>
+  <script src="js/views/SettingsView.js"></script>
+  <script src="js/views/Gate.js"></script>
+  <script src="js/views/LibraryView.js"></script>
+  <script src="js/views/PortalView.js"></script>
+  <script src="js/controllers/AppController.js"></script>
+  <script src="js/controllers/DashboardController.js"></script>
+  <script src="js/controllers/ClientsController.js"></script>
+  <script src="js/controllers/WorkoutsController.js"></script>
+  <script src="js/controllers/MeasuresController.js"></script>
+  <script src="js/controllers/NutritionController.js"></script>
+  <script src="js/controllers/CheckinsController.js"></script>
+  <script src="js/controllers/LibraryController.js"></script>
+  <script src="js/controllers/PortalController.js"></script>
+  <script src="js/controllers/LearnController.js"></script>
+  <script src="js/controllers/LegalController.js"></script>
+  <script src="js/controllers/ShareController.js"></script>
+  <script src="js/controllers/PwaController.js"></script>
+  <script src="js/controllers/SyncController.js"></script>
+  <script src="js/controllers/ReportController.js"></script>
+  <script src="js/controllers/SettingsController.js"></script>
+  <script src="js/controllers/SecurityController.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
